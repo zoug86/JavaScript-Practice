@@ -11,6 +11,7 @@ btn.addEventListener('click', async () => {
     container.removeChild(container.lastChild);
     const keyword = input.value;
     let movies = await movieSearch(keyword, page);
+    console.log(movies);
     if (movies) {
         displayMovies(movies);
         const moreBtn = document.createElement('button');
@@ -27,6 +28,7 @@ btn.addEventListener('click', async () => {
     } else {
         alert('keyword does not exist!')
     }
+    console.log(movies);
 
 })
 
@@ -44,7 +46,11 @@ const displayMovies = (movies) => {
 }
 
 const movieSearch = async (keyword, page) => {
-    const response = await fetch(`https://www.omdbapi.com/?apikey=32daa8f4&s=${keyword}&page=${page}`);
-    const data = await response.json();
-    return data.Search;
+
+    const res = await Promise.all([fetch(`https://www.omdbapi.com/?apikey=32daa8f4&s=${keyword}&page=${page}`),
+    fetch(`https://www.omdbapi.com/?apikey=32daa8f4&s=${keyword}&page=${page + 1}`)]);
+
+    const data = await Promise.all(res.map(res => res.json()));
+    const movies = data[0].Search.concat(data[1].Search);
+    return movies;
 }
