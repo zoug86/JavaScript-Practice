@@ -36,8 +36,8 @@ const displayMovies = (movies) => {
         div.classList.add('movie-info')
         div.innerHTML = `
          <img class='movie-image' src=${movie.Poster} alt=${movie.Title}/>
-         <p>${movie.Title}</p>
-         <p>${movie.Year}</p>
+         <p class='movie-title'>${movie.Title}</p>
+         <p class='movie-year'>${movie.Year}</p>
         `;
         movieList.appendChild(div);
     });
