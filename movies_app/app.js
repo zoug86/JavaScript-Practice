@@ -10,9 +10,7 @@ btn.addEventListener('click', async () => {
     }
     container.removeChild(container.lastChild);
     const keyword = input.value;
-    const response = await fetch(`https://www.omdbapi.com/?apikey=32daa8f4&s=${keyword}`);
-    const data = await response.json();
-    let movies = data.Search;
+    let movies = await movieSearch(keyword, page);
     if (movies) {
         displayMovies(movies);
         const moreBtn = document.createElement('button');
@@ -21,9 +19,8 @@ btn.addEventListener('click', async () => {
         container.appendChild(moreBtn);
         moreBtn.addEventListener('click', async () => {
             page++;
-            const response = await fetch(`https://www.omdbapi.com/?apikey=32daa8f4&s=${keyword}&page=${page}`);
-            const data = await response.json();
-            displayMovies(data.Search);
+            movies = await movieSearch(keyword, page);
+            displayMovies(movies);
         })
         input.value = '';
         movies = [];
@@ -34,7 +31,6 @@ btn.addEventListener('click', async () => {
 })
 
 const displayMovies = (movies) => {
-
     movies.map(movie => {
         const div = document.createElement('div');
         div.classList.add('movie-info')
@@ -45,4 +41,10 @@ const displayMovies = (movies) => {
         `;
         movieList.appendChild(div);
     });
+}
+
+const movieSearch = async (keyword, page) => {
+    const response = await fetch(`https://www.omdbapi.com/?apikey=32daa8f4&s=${keyword}&page=${page}`);
+    const data = await response.json();
+    return data.Search;
 }
