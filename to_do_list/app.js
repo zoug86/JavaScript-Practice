@@ -35,7 +35,9 @@ btn.addEventListener('click', () => {
 
     span.addEventListener('click', () => {
         ul.removeChild(div);
-        remaining--;
+        if (!li.classList.contains('strike-through')) {
+            remaining--;
+        }
         remainingParag.innerText = `Tasks Remaining: ${remaining}`;
     })
 })

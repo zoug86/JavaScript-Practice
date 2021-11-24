@@ -23,10 +23,11 @@
 }
 
 .todo-list-container{
-   width: 200px;
+   width: 300px;
    height: 100%;
    display: flex;
    flex-direction: column;
+   flex-wrap: wrap;
 }
 
 .todo-list{
@@ -38,11 +39,14 @@
 
 .todo-div{
     display: flex;
-    align-items: flex-end;
+    width: 100%;
     margin-bottom: 10px;
+    justify-content: space-between;
+    align-items:center;
 }
 
 .todo{
+    width: 100%;
     font-size: 20px;
    margin-right: 50px;
 }

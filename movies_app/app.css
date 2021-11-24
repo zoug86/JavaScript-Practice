@@ -1,0 +1,56 @@
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.movie-input-container{
+}
+
+.movie-input{
+    padding: 10px;
+    font-size: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.movie-input:focus{
+   outline: none;
+}
+
+.movie-btn{
+    padding: 10px;
+    font-size: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.movie-list{
+    margin: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    text-align: center;
+}
+
+.movie-info{
+  flex: 0 1 20%; /* explanation below */
+  margin: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0 2px 5px rgba(0,0,0,.1);
+}
+
+.movie-image{
+    width: 400px;
+    height: 500px;
+}
+
+.more-btn{
+    padding: 20px;
+    border: 1px solid #ccc;
+    font-size: 20px;
+    cursor: pointer;
+}
