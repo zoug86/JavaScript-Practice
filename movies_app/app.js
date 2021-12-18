@@ -1,56 +1,40 @@
-const container = document.querySelector('.container');
 const input = document.querySelector('.movie-input');
-const btn = document.querySelector('.movie-btn');
-const movieList = document.querySelector('.movie-list');
+const searchBtn = document.querySelector('.movie-btn');
+const movieContainer = document.querySelector('.movie-list');
+const loadBtn = document.querySelector('.load-btn');
 
+let keyword = '';
 let page = 1;
-btn.addEventListener('click', async () => {
-    while (movieList.firstChild) {
-        movieList.removeChild(movieList.firstChild);
-    }
-    container.removeChild(container.lastChild);
-    const keyword = input.value;
-    let movies = await movieSearch(keyword, page);
-    console.log(movies);
-    if (movies) {
-        displayMovies(movies);
-        const moreBtn = document.createElement('button');
-        moreBtn.classList.add('more-btn')
-        moreBtn.innerText = 'Load more...'
-        container.appendChild(moreBtn);
-        moreBtn.addEventListener('click', async () => {
-            page++;
-            movies = await movieSearch(keyword, page);
-            displayMovies(movies);
-        })
-        input.value = '';
-        movies = [];
-    } else {
-        alert('keyword does not exist!')
-    }
-    console.log(movies);
 
+searchBtn.addEventListener('click', async () => {
+    movieContainer.innerHTML = ''
+    keyword = input.value;
+    let movies = searchMovies(keyword, page);
+    if (movies.length > 0) {
+        loadBtn.classList.remove('load-btn-hide')
+        loadBtn.classList.add('load-btn-show')
+    }
+    input.value = '';
 })
 
-const displayMovies = (movies) => {
-    movies.map(movie => {
+loadBtn.addEventListener('click', () => {
+    page++;
+    searchMovies(keyword, page);
+})
+
+const searchMovies = async (keyword, page) => {
+    const reponse = await fetch(`https://www.omdbapi.com/?apikey=32daa8f4&s=${keyword}&page=${page}`);
+    const data = await reponse.json();
+    let movies = data.Search;
+    movies?.map(movie => {
         const div = document.createElement('div');
-        div.classList.add('movie-info')
+        div.classList.add('movie');
         div.innerHTML = `
-         <img class='movie-image' src=${movie.Poster} alt=${movie.Title}/>
-         <p class='movie-title'>${movie.Title}</p>
-         <p class='movie-year'>${movie.Year}</p>
-        `;
-        movieList.appendChild(div);
-    });
-}
-
-const movieSearch = async (keyword, page) => {
-
-    const res = await Promise.all([fetch(`https://www.omdbapi.com/?apikey=32daa8f4&s=${keyword}&page=${page}`),
-    fetch(`https://www.omdbapi.com/?apikey=32daa8f4&s=${keyword}&page=${page + 1}`)]);
-
-    const data = await Promise.all(res.map(res => res.json()));
-    const movies = data[0].Search.concat(data[1].Search);
+           <img class='movie-img' src=${movie.Poster} alt=${movie.Title}/>
+           <span class='movie-title'>${movie.Title}</span>
+           <span class='movie-year'>${movie.Year}</span>
+        `
+        movieContainer.appendChild(div)
+    })
     return movies;
 }
